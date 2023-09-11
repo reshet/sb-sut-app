@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app-sut
+  name: app-sut
+spec:
+  selector:
+    matchLabels:
+      app: app-sut
+  template:
+    metadata:
+      labels:
+        app: app-sut
+    spec:
+#      securityContext:
+#        fsGroup: 472
+#        supplementalGroups:
+#          - 0
+      containers:
+        - name: app-sut
+          image: app-sut-dockerjar:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http-app-sut
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 2
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 8080
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: 250m
+              memory: 750Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-sut
+spec:
+  ports:
+    - port: 3080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: app-sut
+  sessionAffinity: None
+  type: LoadBalancer
