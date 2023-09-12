@@ -43,4 +43,11 @@
    - point to the server url as this one `http://prometheus-service:8085`, leave the rest to defaults
 
 ## Adding Grafana Dashboard exploring app metrics
+  In order to add an example dashboard reading metrics configured, simply import the Dashboard from
+  `grafana/example_dashboard.json` project file.
+
+## Running Gatling load script
+  Example load kotlin script together with enclosing package folder is located in `load/` project folder.
+  Simply copy-paste it to the `../user-files/simulations/` folder of your local Gatling installation,
+  and chose it when running from gatling command line command.
      
