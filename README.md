@@ -39,8 +39,9 @@
    - see Grafana is up and running: `http://localhost:3000/
 
   Wire Grafana to Prometheus:
+   - open `http://localhost:3000/` and login with the Grafana default credentials (admin/admin)
    - open `http://localhost:3000/connections/add-new-connection`
-   - point to the server url as this one `http://prometheus-service:8085`, leave the rest to defaults
+   - point to the server url as this one `http://prometheus-service:8080`, leave the rest to defaults
 
 ## Adding Grafana Dashboard exploring app metrics
   In order to add an example dashboard reading metrics configured, simply import the Dashboard from
