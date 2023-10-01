@@ -14,6 +14,10 @@ app.get('/read-node', async (req, res) => {
     res.json("Done");
 });
 
+app.get('/health-check', (req, res)=> {
+  res.send ("Health check passed");
+});
+
 app.listen(port, () => {
     console.log(`Server running on port ${port} ...`);
 });
