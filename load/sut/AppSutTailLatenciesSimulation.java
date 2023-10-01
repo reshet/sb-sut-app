@@ -9,7 +9,7 @@ import io.gatling.javaapi.http.*;
 public class AppSutTailLatenciesSimulation extends Simulation {
 
     HttpProtocolBuilder httpProtocol =
-        http.baseUrl("http://localhost:3080")
+        http.baseUrl("http://localhost:3280")
             .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
             .acceptLanguageHeader("en-US,en;q=0.5")
             .acceptEncodingHeader("gzip, deflate")
@@ -17,7 +17,7 @@ public class AppSutTailLatenciesSimulation extends Simulation {
                 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0) Gecko/20100101 Firefox/16.0"
             );
 
-    ChainBuilder read = exec(http("Read Spring Rest Controller").get("/read"));
+    ChainBuilder read = exec(http("Read Nodejs Express Controller").get("/read-node"));
     ScenarioBuilder users = scenario("Users Read").exec(read);
 
     {

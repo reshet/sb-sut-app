@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app-sut-nodejs
+  name: app-sut-nodejs
+spec:
+  selector:
+    matchLabels:
+      app: app-sut-nodejs
+  template:
+    metadata:
+      labels:
+        app: app-sut-nodejs
+    spec:
+      containers:
+        - name: app-sut-nodejs
+          image: app-sut-nodejs:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3200
+              name: http-app-sut
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 3200
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 2
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 3200
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: 250m
+              memory: 750Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-sut-nodejs
+spec:
+  ports:
+    - port: 3280
+      protocol: TCP
+      targetPort: 3200
+  selector:
+    app: app-sut-nodejs
+  sessionAffinity: None
+  type: LoadBalancer
